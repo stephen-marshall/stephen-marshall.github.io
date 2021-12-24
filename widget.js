@@ -2,6 +2,7 @@ var initFreshChat =
 (function () {
   'use strict';
   let w = window.freshchatSettings;
+  let h = w.config.headerProperty;
   let content = `
     <div class="__freshdesk_messaging">
         <div id="loading"><div class="flexbox">
@@ -10,11 +11,12 @@ var initFreshChat =
             <div class="dot-loader"></div>
         </div>
         </div>
-            <div id="static-bubble" class="d-hotline h-btn" onclick="initFreshChat(true)">
+            <div id="static-bubble" class="d-hotline" onclick="initFreshChat(true)">
             <div id="chat-icon">
             </div>
         </div>
     </div>`;
+   if(!h?.foregroundColor) h['foregroundColor'] = 'white';  
   let style = `
     .__freshdesk_messaging .d-hotline {
         display: none;
@@ -30,21 +32,16 @@ var initFreshChat =
         z-index: 2147483601;
         height: 60px;
         width: 60px;
+        background-color: HEX !important;
         color: #ffffff !important;
         border-color: transparent HEX transparent transparent;
-    }
-    .d-hotline.h-btn {
-        background-color: HEX !important;
-    }
-    .d-hotline.h-btn #chat-icon:before, .d-hotline.h-btn #chat-icon:after {
-        background-color: HEX !important;
     }
     .__freshdesk_messaging #chat-icon {
         width: 23px;
         height: 17px;
         border-radius: 6px 6px 6px 2px;
         position: relative;
-        background: white;
+        background: FGC !important;
         top: 22px;
         left: 19px;
     }
@@ -55,6 +52,7 @@ var initFreshChat =
         border-top: 10px;
         content: "";
         border-top: 5px;
+        background: HEX !important;
         width: 15px;
         position: absolute;
         top: 5px;
@@ -67,6 +65,7 @@ var initFreshChat =
         border-top: 10px;
         content: "";
         border-top: 5px;
+        background: HEX !important;
         width: 10px;
         position: absolute;
         top: 10px;
@@ -130,11 +129,11 @@ var initFreshChat =
             transform: scale(1);
         }
     }
-`.replace(/HEX/g, w.background);
+`.replace(/HEX/g, h.backgroundColor).replace(/FGC/g, h.foregroundColor);
   var sheet = document.createElement('style')
   sheet.innerHTML = style;
   document.body.appendChild(sheet);
-  document.body.insertAdjacentHTML('beforeend', content);
+  document.body.insertAdjacentHTML( 'beforeend', content );
 
   function initialize(i,t){var e;i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src=w.host+'/js/widget.js',e.onload=setupFreshchat,i.head.appendChild(e))}function initiateCall(){initialize(document,w.product+"-js-sdk")}window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
 
