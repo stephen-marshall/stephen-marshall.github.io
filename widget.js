@@ -34,10 +34,10 @@ var initFreshChat =
         border-color: transparent HEX transparent transparent;
     }
     .d-hotline.h-btn {
-        background: HEX !important;
+        background-color: HEX !important;
     }
     .d-hotline.h-btn #chat-icon:before, .d-hotline.h-btn #chat-icon:after {
-        background: HEX !important;
+        background-color: HEX !important;
     }
     .__freshdesk_messaging #chat-icon {
         width: 23px;
