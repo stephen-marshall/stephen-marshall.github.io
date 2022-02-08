@@ -1,8 +1,70 @@
-var initFreshChat = 
+  var initFreshChat = 
 (function () {
   'use strict';
+  let data;
   let w = window.freshchatSettings;
-  let h = w.config.headerProperty;
+  let onDemandUntil = w.onDemandUntil || 3000;
+  // onload event used - so not advisible to put inside other functions  
+  window.addEventListener?window.addEventListener("load",setupFreshchat,!1):window.attachEvent("load",setupFreshchat,!1);
+
+  function setupFreshchat() {
+    if (!data) {
+      setTimeout(setupFreshchat);
+      return;
+    }
+    if (!data['hideMessenger']) {
+      function initiateCall(){initialize(document,w.product+"-js-sdk")}
+
+      initiateCall();
+
+      function initWebWidget() {
+          setTimeout(() => {
+            initFreshChat();
+          },onDemandUntil);
+          document.querySelector('.__freshdesk_messaging').style.display = "block";
+          window.fcWidget.on("frame:statechange", (data) => {
+              if (data && data.data.frameState === "initialized") {
+                // setTimeout(() => {
+                  document.querySelector('.__freshdesk_messaging #static-bubble').style.display = "none";
+                // },1000);
+                if (markedOpen) {
+                  window.fcWidget.open();
+                }
+              }
+          });
+          window.fcWidget.on("widget:opened", (data) => {
+              document.querySelector('.__freshdesk_messaging #loading').style.visibility = 'hidden';
+          });
+      }
+
+      function initialize(i,t) {
+        var e;
+        i.getElementById(t)?
+        initFreshChat():
+        (
+          (e=i.createElement("script")).id=t,
+          e.async=!0,
+          e.src=w.host+'/js/widget.js',
+          e.onload=initWebWidget,
+          i.head.appendChild(e)
+        )
+      }
+    }
+  }
+  let corsProxy = 'https://cors-anywhere.herokuapp.com';
+  let populateUrl = `${corsProxy}/${window.freshchatSettings.host}/app/services/app/webchat/${window.freshchatSettings.token}/config?domain=${btoa(window.location.origin)}`;
+  // let populateUrl = `${corsProxy}/https://www.wchat.freshchat.com/app/services/app/webchat/${window.freshchatSettings.token}/config?domain=${btoa('https://wchat.freshchat.com')}`;
+  // fetch(`${populateUrl}`, {headers: {'origin': `www.freshworks.com`, 'x-requested-with': `www.freshworks.com`}})
+  fetch(`${populateUrl}`, {headers: {'origin': `${window.location.origin}`, 'x-requested-with': `${window.location.origin}`}})
+  .then((resp) => resp.json())
+  .then((config) => {
+  data = config;
+  let h = {};
+  h['hideChatButton'] = window?.freshchatSettings?.config?.headerProperty?.hideChatButton || false;
+  h['hideMessenger'] = data['hideMessenger'];
+  h['backgroundColor'] = window.freshchatSettings?.config?.headerProperty?.backgroundColor || data?.headerProperty?.backgroundColor;
+  h['foregroundColor'] = window.freshchatSettings?.config?.headerProperty?.foregroundColor || data?.headerProperty?.foregroundColor;
+
   let content = `
     <div class="__freshdesk_messaging">
         <div id="loading"><div class="flexbox">
@@ -29,7 +91,7 @@ var initFreshChat =
         display: table;
         position: absolute;
         right: 20px;
-        z-index: 2147483601;
+        z-index: 3147483602 !important;
         height: 60px;
         width: 60px;
         background-color: HEX !important;
@@ -130,33 +192,16 @@ var initFreshChat =
         }
     }
 `.replace(/HEX/g, h.backgroundColor).replace(/FGC/g, h.foregroundColor);
-  var sheet = document.createElement('style')
-  sheet.innerHTML = style;
-  document.body.appendChild(sheet);
-  document.body.insertAdjacentHTML( 'beforeend', content );
-
-  function initialize(i,t){var e;i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src=w.host+'/js/widget.js',e.onload=setupFreshchat,i.head.appendChild(e))}function initiateCall(){initialize(document,w.product+"-js-sdk")}window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
-
-  var markedOpen = false;
-  var init = false;
-  function setupFreshchat() {
-    document.querySelector('.__freshdesk_messaging').style.display = "block";
-    setTimeout(() => {
-      initFreshChat();
-    },3000);
-    window.fcWidget.on("frame:statechange", (data) => {
-        if (data && data.data.frameState === "initialized") {
-          document.querySelector('.__freshdesk_messaging #static-bubble').style.display = "none";
-          if (markedOpen) {
-            window.fcWidget.open();
-          }
-        }
-    });
-    window.fcWidget.on("widget:opened", (data) => {
-        document.querySelector('.__freshdesk_messaging #loading').style.visibility = 'hidden';
-    });
+  if (!h['hideChatButton'] && !h['hideMessenger']) {
+    var sheet = document.createElement('style')
+    sheet.innerHTML = style;
+    document.body.appendChild(sheet);
+    document.body.insertAdjacentHTML( 'beforeend', content );
   }
-  return function initFreshChat(alsoOpen = false) {
+}); 
+var init = false;
+var markedOpen = false;
+return function initFreshChat(alsoOpen = false) {
     if (alsoOpen) {
       document.querySelector('.__freshdesk_messaging #loading').style.visibility = 'visible';
       markedOpen = true;
