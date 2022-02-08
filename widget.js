@@ -143,7 +143,7 @@ var initFreshChat =
     document.querySelector('.__freshdesk_messaging').style.display = "block";
     setTimeout(() => {
       initFreshChat();
-    },1500);
+    },3000);
     window.fcWidget.on("frame:statechange", (data) => {
         if (data && data.data.frameState === "initialized") {
           document.querySelector('.__freshdesk_messaging #static-bubble').style.display = "none";
