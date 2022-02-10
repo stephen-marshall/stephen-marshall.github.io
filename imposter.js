@@ -6,7 +6,7 @@ let iframeWindow = iframe.contentWindow,
     iframeDoc = iframeWindow.document;
 
 iframeWindow.getConfig = (config) => {
-  iframeWindow.parent.postMessage('config', config);
+  iframeWindow.parent.postMessage(config);
 }
 
 let script = iframeDoc.createElement('script');
