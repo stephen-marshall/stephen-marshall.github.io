@@ -1,24 +1,17 @@
 const iframe = document.createElement('iframe');
-iframe.id = 'config-iframe';
+iframe.id = 'config-load-iframe';
 document.body.append(iframe);
 
 let iframeWindow = iframe.contentWindow,
     iframeDoc = iframeWindow.document;
 
-iframeWindow.getConfig = (config) => {
-  iframeWindow.parent.postMessage(config);
-}
-
 let script = iframeDoc.createElement('script');
 script.src = 'https://stephen-marshall.github.io/config.js';
-
 iframeDoc.head.appendChild(script);
 
-window.iframeWindow = iframeWindow;
-
 window.addEventListener('message', message => {
-    if (message.source !== iframeWindow.parent) {
+    if (message.source !== iframeWindow) {
         return;
     }
     console.log(message.data);
-}, false);
+});
