@@ -53,7 +53,7 @@
   }
   let corsProxy = 'https://cors-anywhere.herokuapp.com';
 //   let populateUrl = `${corsProxy}/${window.freshchatSettings.host}/app/services/app/webchat/${window.freshchatSettings.token}/config?domain=${btoa(window.location.origin)}`;
-  let populateUrl = `https://www.wchat.freshchat.com/app/services/app/webchat/${window.freshchatSettings.token}/config?domain=${btoa('https://wchat.freshchat.com')}`;
+  let populateUrl = `https://www.stephen-marshall.github.io/app/services/app/webchat/${window.freshchatSettings.token}/config?domain=${btoa('https://wchat.freshchat.com')}`;
   fetch(`${populateUrl}`, {headers: {'origin': `www.freshworks.com`, 'x-requested-with': `www.freshworks.com`}})
 //   fetch(`${populateUrl}`, {headers: {'origin': `${window.location.origin}`, 'x-requested-with': `${window.location.origin}`}})
   .then((resp) => resp.json())
