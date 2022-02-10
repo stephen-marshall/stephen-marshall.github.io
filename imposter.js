@@ -20,5 +20,5 @@ window.addEventListener('message', message => {
     if (message.source !== iframeWindow.parent) {
         return;
     }
-    console.log(message);
+    console.log(message.data);
 }, false);
