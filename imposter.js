@@ -17,7 +17,7 @@ iframeDoc.head.appendChild(script);
 window.iframeWindow = iframeWindow;
 
 window.addEventListener('message', message => {
-    if (message.source !== iframeWindow) {
+    if (message.source !== iframeWindow.parent) {
         return;
     }
     console.log(message);
