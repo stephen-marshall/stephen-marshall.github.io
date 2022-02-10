@@ -10,7 +10,6 @@ iframeWindow.getConfig = (config) => {
 }
 
 let script = iframeDoc.createElement('script');
-// script.onload = iframeWindow.getConfig;
 script.src = 'https://stephen-marshall.github.io/config.js';
 
 iframeDoc.head.appendChild(script);
@@ -21,5 +20,5 @@ window.addEventListener('message', message => {
     if (message.source !== iframeWindow) {
         return;
     }
-    console.log(message.data);
+    console.log(message);
 }, false);
