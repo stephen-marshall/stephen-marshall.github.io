@@ -1,5 +1,6 @@
 const iframe = document.createElement('iframe');
 iframe.id = 'config-load-iframe';
+iframe.width = iframe.height = 0;
 document.body.append(iframe);
 
 let iframeWindow = iframe.contentWindow,
