@@ -10,6 +10,5 @@ async function fetchConfig() {
   return config;
 }
 fetchConfig().then(config => {
-  console.log(window.iframeWindow);
-console.log(window.iframeWindow.getConfig);
+  window.parent.iframeWindow.getConfig(config);
 });
