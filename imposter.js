@@ -15,6 +15,8 @@ script.src = 'https://stephen-marshall.github.io/config.js';
 
 iframeDoc.head.appendChild(script);
 
+window.iframeWindow = iframeWindow;
+
 window.addEventListener('message', message => {
     if (message.source !== iframeWindow) {
         return;
